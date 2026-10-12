@@ -2,6 +2,8 @@
 
 Interactive and printable practice for NCEA Level 2 Music **AS 91276**, “Demonstrate knowledge of conventions in a range of music scores” (4 credits).
 
+**[Open the practice app](https://toby-gif-alt.github.io/Cadence-Lab-Level-2/)**
+
 Built as a separate companion to [Cadence-Lab](https://github.com/toby-gif-alt/Cadence-Lab). The Level 3 app's practice-and-model workflow and pinned VexFlow dependency informed this project; the Level 2 teaching content, generator, rendering adapter and application are new.
 
 ## Run it
