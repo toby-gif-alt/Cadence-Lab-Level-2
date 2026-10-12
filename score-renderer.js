@@ -7,18 +7,22 @@
   const count=score.staves[0].bars.length,per=width<600?1:2;
   for(let start=0;start<count;start+=per){
    const container=document.createElement('div');container.className='score-system';target.append(container);
-   const n=Math.min(per,count-start),h=score.staves.length*185+45,columns=Array.from({length:n},()=>[]);
+   const n=Math.min(per,count-start),columns=Array.from({length:n},()=>[]),staveColumns=Array.from({length:n},()=>[]);
+   // Keep related parts together, reserving extra room only for lyrics or TAB.
+   const staffYs=[];let nextY=60;
+   score.staves.forEach(st=>{staffYs.push(nextY);const lyrics=st.bars.slice(start,start+n).some(b=>b.events.some(e=>e.lyric));nextY+=st.clef==='tab'?(st.instrument==='bass'?155:175):lyrics?155:125;});
+   const h=staffYs.at(-1)+(score.staves.at(-1).clef==='tab'?165:140);
    const renderer=new VF.Renderer(container,VF.Renderer.Backends.SVG);renderer.resize(width,h);const ctx=renderer.getContext();ctx.setFont('Arial',12);
    score.staves.forEach((staff,si)=>{
-    const y=60+si*185;ctx.fillText(staff.label,12,y-38);
-    if(staff.text&&start===0)ctx.fillText(staff.text,12,y+(staff.clef==='tab'?128:107));
+    const y=staffYs[si];ctx.fillText(staff.label,12,y-22);
+    if(staff.text&&start===0)ctx.fillText(staff.text,12,y-8);
     const tab=staff.clef==='tab',clef=staff.clef==='vocal-tenor'?'treble':staff.clef;
     for(let j=0;j<n;j++){
      const bi=start+j,bar=staff.bars[bi],x=12+j*(width-24)/n,w=(width-24)/n;
      const stave=tab?new VF.TabStave(x,y,w,{num_lines:staff.instrument==='bass'?4:6}):new VF.Stave(x,y,w);
      if(j===0){stave.addClef(tab?'tab':clef,undefined,staff.clef==='vocal-tenor'||staff.octave===-1?'8vb':undefined);if(!tab&&staff.key)stave.addKeySignature(staff.key);}
      const prev=staff.bars[bi-1];if(!bar.hideMeter&&(bi===0||j===0||bar.meter!==prev?.meter))stave.addTimeSignature(bar.meter);
-     stave.setContext(ctx).draw();ctx.fillText(String(bi+1),x+5,y-18);if(bar.text)ctx.fillText(bar.text,x+40,y-18);
+     stave.setContext(ctx).draw();staveColumns[j].push(stave);if(si===0)ctx.fillText(String(bi+1),x+5,y+12);if(bar.text)ctx.fillText(bar.text,x+40,y+12);
      if(staff.blank||bar.blank){
       // Supplied chord labels remain visible over an empty writing stave.
       bar.events.forEach((e,ei)=>{if(e.label)ctx.fillText(e.label,x+80+ei*(w-100)/Math.max(1,bar.events.length),y-16);});continue;
@@ -41,11 +45,16 @@
       return note;
      });
      if(!notes.length)continue;
-     const [num,den]=bar.meter.split('/').map(Number);const voice=new VF.Voice({num_beats:num,beat_value:den}).setStrict(false).addTickables(notes);
-     columns[j].push({voice,stave,notes,tab,den});
+     const [num,den]=bar.meter.split('/').map(Number);
+     // Attach beams before formatting and drawing: VexFlow then suppresses the
+     // flags and lets the beam determine consistent stem directions/lengths.
+     const beams=tab?[]:VF.Beam.generateBeams(notes,{groups:den===8?[new VF.Fraction(3,8)]:[new VF.Fraction(1,4)]});
+     const voice=new VF.Voice({num_beats:num,beat_value:den}).setStrict(false).addTickables(notes);
+     columns[j].push({voice,stave,notes,beams});
     }
    });
-   columns.forEach(column=>{if(!column.length)return;const begin=Math.max(...column.map(c=>c.stave.getNoteStartX())),end=Math.min(...column.map(c=>c.stave.getNoteEndX()));const formatter=new VF.Formatter();column.forEach(c=>{c.stave.setNoteStartX(begin);formatter.joinVoices([c.voice]);});formatter.format(column.map(c=>c.voice),Math.max(80,end-begin-20));column.forEach(c=>{c.voice.draw(ctx,c.stave);if(!c.tab)VF.Beam.generateBeams(c.notes,{groups:c.den===8?[new VF.Fraction(3,8)]:[new VF.Fraction(1,4)]}).forEach(b=>b.setContext(ctx).draw());});});
+   columns.forEach(column=>{if(!column.length)return;const begin=Math.max(...column.map(c=>c.stave.getNoteStartX())),end=Math.min(...column.map(c=>c.stave.getNoteEndX()));const formatter=new VF.Formatter();column.forEach(c=>{c.stave.setNoteStartX(begin);formatter.joinVoices([c.voice]);});formatter.format(column.map(c=>c.voice),Math.max(80,end-begin-20));column.forEach(c=>{c.voice.draw(ctx,c.stave);c.beams.forEach(b=>b.setContext(ctx).draw());});});
+   if(score.staves.length>1)staveColumns.forEach((staves,j)=>{ctx.openGroup('staveconnector');new VF.StaveConnector(staves[0],staves.at(-1)).setType(VF.StaveConnector.type.SINGLE_LEFT).setContext(ctx).draw();if(j===0)new VF.StaveConnector(staves[0],staves.at(-1)).setType(score.staves.every(s=>s.label.startsWith('Piano'))?VF.StaveConnector.type.BRACE:VF.StaveConnector.type.BRACKET).setContext(ctx).draw();ctx.closeGroup();});
    const svg=container.querySelector('svg');svg.setAttribute('viewBox',`0 0 ${width} ${h}`);svg.setAttribute('role','img');svg.setAttribute('aria-label',score.staves.map(s=>s.label).join(', '));
   }
  }

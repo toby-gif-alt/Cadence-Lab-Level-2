@@ -15,11 +15,13 @@ Verified 12 October 2026 (Pacific/Auckland).
 
 ## Browser QA
 
-`tests/browser.html`, opened in Chrome with the actual production script order: **840 assertions, 0 failures** after the final engraving changes.
+`tests/browser.html`, opened in Chrome with the actual production script order: **845 assertions, 0 failures** after the spacing and beaming corrections.
 
 Every template was rendered as a question and, where present, a model at **1000px and 390px** app-frame widths. Checks covered score SVG presence, model secrecy before submission, model-audio locking, self-check controls, duration/pitch validation, blank-region audio exclusion and container fit. Additional checks covered draft restoration, seeded URLs, valid family/year filter combinations, and the question/model print CSS rules.
 
 Visual inspection covered the actual app and revealed TAB model. Engraving review prompted two fixes: genuine musical rest glyphs on TAB rather than explanatory text, and a shared formatter across simultaneous staff voices so their beat positions align. The full browser suite was rerun after those changes.
+
+The subsequent layout review reduced ordinary staff spacing from 185px to 125px, retained additional room for lyrics/TAB, moved staff information above the stave, and connected related parts with barlines and a bracket (or a piano brace). Beams are now attached before formatting/drawing, so beamed quavers have consistent stems and no residual individual flags. Five additional regression assertions inspect the note state at drawing time, check all 32 quavers in a diminution model, retain flags on standalone quavers, and verify compact multi-part spacing and rendered connectors. The complete desktop/mobile browser suite and seven musical tests passed after this correction.
 
 All ten official source links in the source manifest returned HTTP 200 when checked. These links identify official source resources; the SHA-256 fingerprints identify the exact user-supplied files reviewed, which may differ from later official revisions.
 

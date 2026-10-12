@@ -15,7 +15,17 @@ document.getElementById('run').onclick=async()=>{
     }catch(e){errors.push(width+' '+t.id+': '+e.message);}
    }
   }
-  const w=frame.contentWindow,d=w.document;w.L2App.load('harmony-roman',91276);d.querySelector('#answer-0').value='My own response';d.querySelector('#answer-0').dispatchEvent(new Event('input'));w.L2App.load('harmony-roman',91276);check(d.querySelector('#answer-0').value==='My own response','Draft not restored');check(w.location.search.includes('seed=91276'),'Seed URL not retained');
+  const w=frame.contentWindow,d=w.document;
+  // Inspect note state at the moment of drawing, not after beams have been
+  // attached: this catches the former flags-plus-beams rendering regression.
+  const proto=w.Vex.Flow.StaveNote.prototype,originalDraw=proto.draw;let drawn=[];
+  proto.draw=function(){drawn.push({duration:this.getDuration(),beam:Boolean(this.getBeam()),flag:this.shouldDrawFlag(),y:this.getStave().getY()});return originalDraw.apply(this,arguments);};
+  try{
+   w.L2App.load('compose-diminution',42);drawn=[];w.L2App.reveal();const eighths=drawn.filter(n=>n.duration==='8');check(eighths.length===32,'Expected 32 model quavers');check(eighths.every(n=>n.beam&&!n.flag),'Beamed quaver drawn with a flag or without its beam');
+   drawn=[];w.L2App.load('transpose-bb-written',42);check(drawn.some(n=>n.duration==='8'&&!n.beam&&n.flag),'Standalone quaver must retain its flag');
+   drawn=[];w.L2App.load('feature-imitation',42);const ys=[...new Set(drawn.map(n=>n.y))].sort((a,b)=>a-b);check(ys.length===2&&ys[1]-ys[0]===125,'Related parts must use compact 125px staff spacing');check(d.querySelector('#score .vf-staveconnector')!==null,'Related parts missing their connector');
+  }finally{proto.draw=originalDraw;}
+  w.L2App.load('harmony-roman',91276);d.querySelector('#answer-0').value='My own response';d.querySelector('#answer-0').dispatchEvent(new Event('input'));w.L2App.load('harmony-roman',91276);check(d.querySelector('#answer-0').value==='My own response','Draft not restored');check(w.location.search.includes('seed=91276'),'Seed URL not retained');
   const rules=[...d.styleSheets].flatMap(s=>[...s.cssRules]).map(r=>r.cssText).join('\n');check(rules.includes('body[data-print="question"] #model'),'Question print does not hide model');check(rules.includes('body[data-print="model"] #score'),'Model print does not hide question score');
   for(const f of ['intervals','transposition','composition']){d.querySelector('#family').value=f;d.querySelector('#family').dispatchEvent(new Event('change'));check(d.querySelector('#template').options.length>0,f+' empty filter');for(const o of d.querySelector('#year').options){if(o.disabled)continue;d.querySelector('#year').value=o.value;d.querySelector('#year').dispatchEvent(new Event('change'));check(d.querySelector('#template').options.length>0,f+' '+o.value+' empty filter');}}
   w.L2App.load('tab-bass-to-tab',42);w.L2App.reveal();
