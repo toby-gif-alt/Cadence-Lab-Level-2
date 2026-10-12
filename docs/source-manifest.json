@@ -1,0 +1,102 @@
+[
+  {
+    "filename": "2021_Music_91276-exm-2021.pdf",
+    "year": 2021,
+    "kind": "examination",
+    "pages": 16,
+    "sha256": "3c1ec3094e909fb9f403b31c920a529afba0ba4be28822d0b92d6c24106dc986",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/exams/2021/91276-exm-2021.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "2022_Music_91276-exm-2022.pdf",
+    "year": 2022,
+    "kind": "examination",
+    "pages": 16,
+    "sha256": "dd75889b990553f8a9183c98fedcc7efd8960fae2cf13b76c8eeba4c60da6ce3",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/exams/2022/91276-exm-2022.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "2023_Music_91276-exm-2023.pdf",
+    "year": 2023,
+    "kind": "examination",
+    "pages": 12,
+    "sha256": "7d68c8e50d1ba7955ecc80f173e7948b5b6f59038d58fd186efe7903d391110d",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/exams/2023/91276-exm-2023.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "2024_Music_91276-exm-2024.pdf",
+    "year": 2024,
+    "kind": "examination",
+    "pages": 16,
+    "sha256": "dd6be0d583248122c88ec8141b3ba9a5ca3fb48fd1c266a3ab0345b76ab98faa",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/exams/2024/91276-exm-2024.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "2025_Music_91276-exm-2025.pdf",
+    "year": 2025,
+    "kind": "examination",
+    "pages": 16,
+    "sha256": "fba4bdd3889481a346c506a9c6488d137d746220368789d3658f8a60d238ad6a",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/exams/2025/91276-exm-2025.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "91276-ass-2021.pdf",
+    "year": 2021,
+    "kind": "schedule",
+    "pages": 8,
+    "sha256": "cbdea6872eb9aa7217181709f4a720e4cf84bd942785e4ae44a049a991843a0a",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/schedules/2021/91276-ass-2021.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "91276-ass-2022.pdf",
+    "year": 2022,
+    "kind": "schedule",
+    "pages": 9,
+    "sha256": "ee9b3411de53280868235bc7d5f723a568172ac1bbd37757aff2cfb44e6ddba9",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/schedules/2022/91276-ass-2022.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "91276-ass-2023.pdf",
+    "year": 2023,
+    "kind": "schedule",
+    "pages": 8,
+    "sha256": "d0a7dfe4064ee8723ef56ce8ea163f3283645762058cd04e7c67f684a33ef15d",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/schedules/2023/91276-ass-2023.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "91276-ass-2024.pdf",
+    "year": 2024,
+    "kind": "schedule",
+    "pages": 8,
+    "sha256": "f5ea040be5737f87fe64b9f55c209d2803797f46d87c174938f98178726819b8",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/schedules/2024/91276-ass-2024.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  },
+  {
+    "filename": "91276-ass-2025.pdf",
+    "year": 2025,
+    "kind": "schedule",
+    "pages": 7,
+    "sha256": "200dc8d59339cb35603c3f2cbd16982ea50783bdb027acc8926589629edc7472",
+    "url": "https://www.nzqa.govt.nz/nqfdocs/ncea-resource/schedules/2025/91276-ass-2025.pdf",
+    "review": "Text and rendered task/notation pages inspected; original exercises only.",
+    "urlPurpose": "Official source link; fingerprint identifies the user-supplied file and may differ from later official revisions."
+  }
+]

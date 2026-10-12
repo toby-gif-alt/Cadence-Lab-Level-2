@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Level 2 browser QA</title><style>body{font:14px system-ui;margin:20px}button{padding:12px}iframe{display:block;border:1px solid #bbb;height:950px;margin-top:20px;max-width:100%}pre{white-space:pre-wrap}</style><h1>Level 2 browser QA</h1><p>Checks all templates at 1000px and 390px, notation/model rendering, reveal, filters, seeded links, drafts, silent blank regions and print rules.</p><button id="run">Run browser checks</button><pre id="results">Ready</pre><iframe id="app" title="Practice app under test" src="../index.html?exercise=transpose-bb-written&amp;seed=42" width="1000"></iframe><script>
+document.getElementById('run').onclick=async()=>{
+ const frame=document.getElementById('app'),out=document.getElementById('results'),errors=[];let checks=0;
+ function check(ok,message){checks++;if(!ok)errors.push(message);}
+ function tick(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}
+ out.textContent='Running…';
+ try{
+  for(const width of [1000,390]){
+   frame.style.width=width+'px';await tick();const w=frame.contentWindow,d=w.document;
+   for(const t of w.L2Bank.templates){
+    try{w.L2App.load(t.id,42);await tick();check(d.querySelector('#score svg')!==null,width+' '+t.id+' missing SVG');check(d.querySelector('#model').hidden,width+' '+t.id+' model visible before reveal');check(d.querySelector('#play-model').disabled,width+' '+t.id+' model audio unlocked');
+     const q=w.L2App.question;check(w.L2Validator.validate(q).length===0,t.id+' invalid question');const expected=q.score.staves.reduce((sum,s)=>sum+s.bars.filter(b=>!s.blank&&!b.blank).reduce((a,b)=>a+b.events.filter(e=>e.p&&!e.rest).reduce((a,e)=>a+e.p.length,0),0),0);check(w.L2Playback.timeline(q.score).length===expected,t.id+' audio contains hidden notes');
+     w.L2App.reveal();check(!d.querySelector('#model').hidden,t.id+' reveal failed');if(q.model)check(d.querySelector('#model-score svg')!==null,t.id+' model missing SVG');check(d.querySelectorAll('#checks input').length===3,t.id+' missing self-checks');
+     const svg=d.querySelector('#score svg');check(svg.getBoundingClientRect().width<=d.querySelector('#score').clientWidth+1,width+' '+t.id+' SVG overflow');
+    }catch(e){errors.push(width+' '+t.id+': '+e.message);}
+   }
+  }
+  const w=frame.contentWindow,d=w.document;w.L2App.load('harmony-roman',91276);d.querySelector('#answer-0').value='My own response';d.querySelector('#answer-0').dispatchEvent(new Event('input'));w.L2App.load('harmony-roman',91276);check(d.querySelector('#answer-0').value==='My own response','Draft not restored');check(w.location.search.includes('seed=91276'),'Seed URL not retained');
+  const rules=[...d.styleSheets].flatMap(s=>[...s.cssRules]).map(r=>r.cssText).join('\n');check(rules.includes('body[data-print="question"] #model'),'Question print does not hide model');check(rules.includes('body[data-print="model"] #score'),'Model print does not hide question score');
+  for(const f of ['intervals','transposition','composition']){d.querySelector('#family').value=f;d.querySelector('#family').dispatchEvent(new Event('change'));check(d.querySelector('#template').options.length>0,f+' empty filter');for(const o of d.querySelector('#year').options){if(o.disabled)continue;d.querySelector('#year').value=o.value;d.querySelector('#year').dispatchEvent(new Event('change'));check(d.querySelector('#template').options.length>0,f+' '+o.value+' empty filter');}}
+  w.L2App.load('tab-bass-to-tab',42);w.L2App.reveal();
+ }catch(e){errors.push('Harness: '+e.message);}
+ out.textContent=JSON.stringify({checks,failures:errors.length,errors},null,2);document.getElementById('run').textContent=errors.length?'Checks failed':'All checks passed';
+};
+</script></html>

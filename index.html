@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#172554"><meta name="description" content="NCEA Level 2 Music AS 91276 score conventions practice informed by the 2021–2025 papers and schedules."><title>Cadence Lab · Level 2</title><link rel="icon" href="favicon.svg"><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header><a class="brand" href="./"><span class="mark" aria-hidden="true">𝄞</span><span><strong>Cadence Lab</strong><small>Level 2 · AS 91276</small></span></a><span class="chip">Music score conventions</span></header>
+<main>
+ <aside class="controls"><p class="eyebrow">Practice setup</p><h1>Read. Write.<br>Understand.</h1><p>Work with a score, build your response, then compare the musical evidence.</p>
+ <label for="family">Question type</label><select id="family"><option value="all">Mixed practice</option></select>
+ <label for="year">Exam influence</label><select id="year"><option value="all">All five years</option><option>2021</option><option>2022</option><option>2023</option><option>2024</option><option>2025</option></select>
+ <label for="template">Exercise</label><select id="template"></select><button id="new" class="primary">New question <span aria-hidden="true">↻</span></button>
+ <div class="note"><strong>Go beyond naming</strong><p>Explain how a feature works, cite bar or pitch evidence, and connect it to what the listener hears.</p></div>
+ <p class="fine">All exercises are original practice informed by the supplied papers. They are not official examination reproductions.</p>
+ <a class="text-link" href="docs/source-audit-2021-2025.md">Read the full exam & schedule audit ↗</a><p class="fine" id="count"></p>
+ </aside>
+ <section class="workspace"><article class="paper">
+ <div class="heading"><div><p class="eyebrow" id="family-label"></p><h2 id="title">Loading…</h2></div><span class="chip" id="variant"></span></div>
+ <p id="context" class="context"></p><p id="provenance" class="fine"></p><ol id="tasks"></ol>
+ <div id="score" class="score" aria-label="Question score"></div><div id="writing-score" class="score" aria-label="Writing staves"></div>
+ <div id="fields" class="fields"></div><label for="notes" class="response-label">Your explanation / working</label><textarea id="notes" placeholder="Name the feature, give exact score evidence, and explain its effect. For notation tasks, work on paper and use this space for your explanation."></textarea>
+ <div class="actions"><button id="reveal" class="primary">I’ve finished · compare</button><button id="print-question">Print question</button><button id="copy-link">Copy question link</button></div>
+ <p id="status" role="status" class="fine"></p>
+ <section id="model" hidden><p class="eyebrow">Model response</p><h3>Compare the evidence</h3><div id="comparison"></div><div id="model-score" class="score"></div><ul id="answer"></ul>
+ <div class="checks"><h3>Check your own work</h3><div id="checks"></div><p class="fine">These describe the progression towards Achievement, Merit and Excellence. They are self-check prompts, not an official NCEA grade or a percentage conversion.</p></div><button id="print-model">Print model</button></section>
+ <section class="listen"><p class="eyebrow">Listen and compare</p><div class="actions"><button id="play-question">Hear supplied notes</button><button id="play-model" disabled>Hear model</button><button id="stop">Stop</button><label for="tempo">♩ BPM <input id="tempo" type="number" min="40" max="160" value="96"></label></div><p class="fine">Notation audition uses a steady selected tempo and simple tones. Follow printed tempo and performance markings in your written response. Blank writing regions are silent.</p></section>
+ </article><footer>AS 91276 · Demonstrate knowledge of conventions in a range of music scores · 4 credits</footer></section>
+</main>
+<script src="vendor/vexflow-bravura-4.2.5.js"></script><script src="theory.js"></script><script src="question-bank.js"></script><script src="validator.js"></script><script src="score-renderer.js"></script><script src="playback.js"></script><script src="app.js"></script>
+</body></html>
