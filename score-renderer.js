@@ -10,7 +10,7 @@
    const n=Math.min(per,count-start),columns=Array.from({length:n},()=>[]),staveColumns=Array.from({length:n},()=>[]);
    // Keep related parts together, reserving extra room only for lyrics or TAB.
    const staffYs=[];let nextY=60;
-   score.staves.forEach(st=>{staffYs.push(nextY);const lyrics=st.bars.slice(start,start+n).some(b=>b.events.some(e=>e.lyric));nextY+=st.clef==='tab'?(st.instrument==='bass'?155:175):lyrics?155:125;});
+   score.staves.forEach(st=>{staffYs.push(nextY);const lyrics=st.bars.slice(start,start+n).some(b=>b.events.some(e=>e.lyric));nextY+=st.clef==='tab'?(st.instrument==='bass'?155:175):lyrics?155:135;});
    const h=staffYs.at(-1)+(score.staves.at(-1).clef==='tab'?165:140);
    const renderer=new VF.Renderer(container,VF.Renderer.Backends.SVG);renderer.resize(width,h);const ctx=renderer.getContext();ctx.setFont('Arial',12);
    score.staves.forEach((staff,si)=>{

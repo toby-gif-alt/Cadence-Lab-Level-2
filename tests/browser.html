@@ -23,7 +23,7 @@ document.getElementById('run').onclick=async()=>{
   try{
    w.L2App.load('compose-diminution',42);drawn=[];w.L2App.reveal();const eighths=drawn.filter(n=>n.duration==='8');check(eighths.length===32,'Expected 32 model quavers');check(eighths.every(n=>n.beam&&!n.flag),'Beamed quaver drawn with a flag or without its beam');
    drawn=[];w.L2App.load('transpose-bb-written',42);check(drawn.some(n=>n.duration==='8'&&!n.beam&&n.flag),'Standalone quaver must retain its flag');
-   drawn=[];w.L2App.load('feature-imitation',42);const ys=[...new Set(drawn.map(n=>n.y))].sort((a,b)=>a-b);check(ys.length===2&&ys[1]-ys[0]===125,'Related parts must use compact 125px staff spacing');check(d.querySelector('#score .vf-staveconnector')!==null,'Related parts missing their connector');
+   drawn=[];w.L2App.load('feature-imitation',42);const ys=[...new Set(drawn.map(n=>n.y))].sort((a,b)=>a-b);check(ys.length===2&&ys[1]-ys[0]===135,'Related parts must use compact 135px staff spacing');check(d.querySelector('#score .vf-staveconnector')!==null,'Related parts missing their connector');
   }finally{proto.draw=originalDraw;}
   w.L2App.load('harmony-roman',91276);d.querySelector('#answer-0').value='My own response';d.querySelector('#answer-0').dispatchEvent(new Event('input'));w.L2App.load('harmony-roman',91276);check(d.querySelector('#answer-0').value==='My own response','Draft not restored');check(w.location.search.includes('seed=91276'),'Seed URL not retained');
   const rules=[...d.styleSheets].flatMap(s=>[...s.cssRules]).map(r=>r.cssText).join('\n');check(rules.includes('body[data-print="question"] #model'),'Question print does not hide model');check(rules.includes('body[data-print="model"] #score'),'Model print does not hide question score');
