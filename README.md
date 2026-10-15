@@ -40,6 +40,8 @@ The 48 templates span 13 families:
 
 Generators vary only within constrained authored structures. Different seeds can produce identical musical content; the seed is a reproducibility identifier, not a promise of unlimited unique compositions. Every question is **original practice informed by the exams**, not an exact official reference. Some questions intentionally use more than one skill. Notation and discussion remain self-assessed; answer text matching is not NCEA grading.
 
+Motif tasks draw on 16 authored rhythmic shapes across 4/4, 3/4 and 6/8, including rests, dotted figures, semiquavers and ties. Four-bar extracts provide context; development models preserve the motif through sequencing, inversion, augmentation and diminution. Slurs, articulation and dynamics support phrase reading, and tied notes sustain during playback.
+
 ## Sources and depth of review
 
 All five supplied 2021–2025 examination papers and all five assessment schedules were read, including rendered notation and marking evidence. [The complete source audit](docs/source-audit-2021-2025.md) maps every examination part, records answer evidence and qualitative marking requirements, identifies source discrepancies, and explains the authoring choices. [The source manifest](docs/source-manifest.json) records fingerprints and links. The source PDFs are external material and are not republished in this repository.
@@ -49,6 +51,7 @@ The bank deliberately covers Level 2 conventions beyond Level 3 harmony: quantit
 ## Architecture
 
 - `theory.js`: spelled pitches, interval calculation, diatonic scales, transposition, seeded randomness, duration totals, TAB tunings and conversions.
+- `musical-material.js`: authored rhythmic motifs, phrase extracts, exact transformations and tied bar splitting.
 - `question-bank.js`: 48 authored templates, source-task provenance, musical surfaces, prompts, answer models and self-checks.
 - `score-renderer.js`: responsive VexFlow staff/TAB systems, clefs, key/meter changes, accidental state, articulation, lyrics and blank writing staves.
 - `validator.js`: bar totals, aligned staves, transposition spelling/rhythm, TAB pitch checks, completion chord membership and bass checks.

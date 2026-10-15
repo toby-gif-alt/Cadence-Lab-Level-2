@@ -193,3 +193,17 @@ The supplied PDF's extracted text duplicates portions of Q1(b–c) on page 2; vi
 ## Deliberate limits
 
 The app covers every major skill family encountered in these five papers. Some exact surfaces—multi-staff slur/fermata annotation, detailed tuplet/polyrhythm analysis and source-specific lyrical interpretations—are documented in this audit rather than reproduced. It provides no browser note-entry editor and no automated grading of paper notation. Completion models check chord membership and bass identity; they are short Level 2 realisation examples, not a certified strict four-part chorale style engine. Audio is a steady-tempo notation audition with simple tones, not an expressive performance renderer.
+
+## Visual and rhythmic comparison, 16 October 2026
+
+The rendered examination pages were compared again with the app scores, including the 2021 Happy/Mendelssohn extracts, 2022 Bray material, 2023 St Thomas, 2024 Mozart strings, and 2025 Mahuru/Für Elise. The earlier app overused uniform crotchets and repeated rhythms.
+
+| Observed source feature | Revised original practice |
+| --- | --- |
+| Syncopation, rests and tied durations in the popular-song extracts | Authored offbeat and tied motifs; ties engrave and sustain correctly |
+| Dotted figures and quick runs in 2022 material | Dotted-quaver/semiquaver figures and semiquaver openings; exact halving/doubling models |
+| Motifs presented within phrases | Four-bar source extracts with Motif A labelled, phrase slurs, articulation and dynamics |
+| Moving first violin against sustained lower strings in 2024 | Quartet completion uses a moving upper line, sustained inner voices, side labels and a compact connected system |
+| Piano melody and broken-chord accompaniment in 2025 | Varied piano completion and chord-analysis surfaces with independent accompaniment rhythms |
+
+The 16 motif shapes span 4/4, 3/4 and 6/8. Sequence, inversion, diminution and augmentation preserve the identity of each chosen motif rather than replacing it with arbitrary rhythms. These remain original teaching examples, not copies of the repertoire. Detailed tuplets and polyrhythms remain outside the renderer's declared scope.

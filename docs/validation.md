@@ -1,10 +1,10 @@
 # Validation results
 
-Verified 12 October 2026 (Pacific/Auckland).
+Verified 16 October 2026 (Pacific/Auckland).
 
 ## Musical and structural tests
 
-`node --test tests/music.test.cjs`: **7 tests passed, 0 failed**.
+`node --test tests/music.test.cjs`: **12 tests passed, 0 failed**.
 
 - Independent interval fixtures cover major, minor, perfect, augmented and diminished spelling; enharmonic pairs with equal semitone distance retain different interval names.
 - Independent transposition fixtures verify B-flat, E-flat and F instrument directions and exact note spelling.
@@ -15,9 +15,9 @@ Verified 12 October 2026 (Pacific/Auckland).
 
 ## Browser QA
 
-`tests/browser.html`, opened in Chrome with the actual production script order: **845 assertions, 0 failures** after the spacing and beaming corrections.
+`tests/browser.html`, opened in Chrome with the actual production script order: **1,882 assertions, 0 failures** after the spacing and beaming corrections.
 
-Every template was rendered as a question and, where present, a model at **1000px and 390px** app-frame widths. Checks covered score SVG presence, model secrecy before submission, model-audio locking, self-check controls, duration/pitch validation, blank-region audio exclusion and container fit. Additional checks covered draft restoration, seeded URLs, valid family/year filter combinations, and the question/model print CSS rules.
+Every template was rendered as a question and, where present, a model at **1440px, 1000px and 390px** app-frame widths. Checks covered score SVG presence, model secrecy before submission, model-audio locking, self-check controls, duration/pitch validation, blank-region audio exclusion and container fit. Additional checks covered draft restoration, seeded URLs, valid family/year filter combinations, and the question/model print CSS rules.
 
 Visual inspection covered the actual app and revealed TAB model. Engraving review prompted two fixes: genuine musical rest glyphs on TAB rather than explanatory text, and a shared formatter across simultaneous staff voices so their beat positions align. The full browser suite was rerun after those changes.
 
@@ -28,3 +28,7 @@ All ten official source links in the source manifest returned HTTP 200 when chec
 ## Limits of these checks
 
 The tests do not grade arbitrary learner notation or prose. They do not certify strict chorale part-writing, every possible alternative harmonic interpretation, expressive synthesis, or an exact reproduction of NZQA repertoire. Browser print **visibility rules** were checked; individual printed page breaks depend on browser/printer settings. The musical audit and declared scope are in `source-audit-2021-2025.md`.
+
+## Rhythmic-material revision, 16 October
+
+All 16 authored motifs were checked for complete bars and distinct metre/rhythm combinations. Independent event comparisons verify augmentation and diminution, merging tied fragments before comparison; inversion and sequence retain the original rhythm. Tests reject dangling ties, incorrect tied pitches and unpaired slurs. Browser checks additionally render all 16 motifs with all five development devices at 1440px and 390px, inspect slurs/ties, verify playback length and confirm that tied notes sustain without reattacks. Desktop visual review covered a motif development model and the compact four-part quartet layout.

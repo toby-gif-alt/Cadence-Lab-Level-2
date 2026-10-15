@@ -1,17 +1,17 @@
-<!doctype html><html lang="en"><meta charset="utf-8"><title>Level 2 browser QA</title><style>body{font:14px system-ui;margin:20px}button{padding:12px}iframe{display:block;border:1px solid #bbb;height:950px;margin-top:20px;max-width:100%}pre{white-space:pre-wrap}</style><h1>Level 2 browser QA</h1><p>Checks all templates at 1000px and 390px, notation/model rendering, reveal, filters, seeded links, drafts, silent blank regions and print rules.</p><button id="run">Run browser checks</button><pre id="results">Ready</pre><iframe id="app" title="Practice app under test" src="../index.html?exercise=transpose-bb-written&amp;seed=42" width="1000"></iframe><script>
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Level 2 browser QA</title><style>body{font:14px system-ui;margin:20px}button{padding:12px}iframe{display:block;border:1px solid #bbb;height:950px;margin-top:20px;max-width:100%}pre{white-space:pre-wrap}</style><h1>Level 2 browser QA</h1><p>Checks all templates at 1440px, 1000px and 390px, notation/model rendering, reveal, filters, seeded links, drafts, silent blank regions and print rules.</p><button id="run">Run browser checks</button><pre id="results">Ready</pre><iframe id="app" title="Practice app under test" src="../index.html?exercise=transpose-bb-written&amp;seed=42" width="1000"></iframe><script>
 document.getElementById('run').onclick=async()=>{
  const frame=document.getElementById('app'),out=document.getElementById('results'),errors=[];let checks=0;
  function check(ok,message){checks++;if(!ok)errors.push(message);}
  function tick(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));}
  out.textContent='Running…';
  try{
-  for(const width of [1000,390]){
+  for(const width of [1440,1000,390]){
    frame.style.width=width+'px';await tick();const w=frame.contentWindow,d=w.document;
    for(const t of w.L2Bank.templates){
     try{w.L2App.load(t.id,42);await tick();check(d.querySelector('#score svg')!==null,width+' '+t.id+' missing SVG');check(d.querySelector('#model').hidden,width+' '+t.id+' model visible before reveal');check(d.querySelector('#play-model').disabled,width+' '+t.id+' model audio unlocked');
-     const q=w.L2App.question;check(w.L2Validator.validate(q).length===0,t.id+' invalid question');const expected=q.score.staves.reduce((sum,s)=>sum+s.bars.filter(b=>!s.blank&&!b.blank).reduce((a,b)=>a+b.events.filter(e=>e.p&&!e.rest).reduce((a,e)=>a+e.p.length,0),0),0);check(w.L2Playback.timeline(q.score).length===expected,t.id+' audio contains hidden notes');
+     const q=w.L2App.question;check(w.L2Validator.validate(q).length===0,t.id+' invalid question');const expected=q.score.staves.reduce((sum,s)=>{let previous=null;return sum+s.bars.flatMap(b=>s.blank||b.blank?[]:b.events).reduce((n,e)=>{const continuation=previous?.tieNext&&JSON.stringify(previous.p)===JSON.stringify(e.p);previous=e;return n+(e.p&&!continuation?e.p.length:0);},0);},0);check(w.L2Playback.timeline(q.score).length===expected,t.id+' audio contains hidden notes');
      w.L2App.reveal();check(!d.querySelector('#model').hidden,t.id+' reveal failed');if(q.model)check(d.querySelector('#model-score svg')!==null,t.id+' model missing SVG');check(d.querySelectorAll('#checks input').length===3,t.id+' missing self-checks');
-     const svg=d.querySelector('#score svg');check(svg.getBoundingClientRect().width<=d.querySelector('#score').clientWidth+1,width+' '+t.id+' SVG overflow');
+     const svg=d.querySelector('#score svg');check(svg.getBoundingClientRect().width<=d.querySelector('#score').scrollWidth+1,width+' '+t.id+' uncontrolled SVG overflow');check(d.documentElement.scrollWidth<=frame.clientWidth+1,width+' '+t.id+' page overflow');
     }catch(e){errors.push(width+' '+t.id+': '+e.message);}
    }
   }
@@ -21,10 +21,22 @@ document.getElementById('run').onclick=async()=>{
   const proto=w.Vex.Flow.StaveNote.prototype,originalDraw=proto.draw;let drawn=[];
   proto.draw=function(){drawn.push({duration:this.getDuration(),beam:Boolean(this.getBeam()),flag:this.shouldDrawFlag(),y:this.getStave().getY()});return originalDraw.apply(this,arguments);};
   try{
-   w.L2App.load('compose-diminution',42);drawn=[];w.L2App.reveal();const eighths=drawn.filter(n=>n.duration==='8');check(eighths.length===32,'Expected 32 model quavers');check(eighths.every(n=>n.beam&&!n.flag),'Beamed quaver drawn with a flag or without its beam');
-   drawn=[];w.L2App.load('transpose-bb-written',42);check(drawn.some(n=>n.duration==='8'&&!n.beam&&n.flag),'Standalone quaver must retain its flag');
+   const fixture={staves:[{label:'Beaming fixture',clef:'treble',key:'C',bars:[{meter:'4/4',events:Array.from({length:8},()=>({p:['C4'],d:'8'}))}]}]};
+   drawn=[];w.L2Renderer.render(d.querySelector('#model-score'),fixture);const eighths=drawn.filter(n=>n.duration==='8');check(eighths.length===8,'Expected eight fixture quavers');check(eighths.every(n=>n.beam&&!n.flag),'Beamed quaver drawn with a flag or without its beam');
+   drawn=[];w.L2Renderer.render(d.querySelector('#model-score'),{staves:[{label:'Single quaver',clef:'treble',key:'C',bars:[{meter:'4/4',events:[{p:['C4'],d:'8'},{p:['D4'],d:'qd'},{p:['E4'],d:'h'}]}]}]});check(drawn.some(n=>n.duration==='8'&&!n.beam&&n.flag),'Standalone quaver must retain its flag');
    drawn=[];w.L2App.load('feature-imitation',42);const ys=[...new Set(drawn.map(n=>n.y))].sort((a,b)=>a-b);check(ys.length===2&&ys[1]-ys[0]===135,'Related parts must use compact 135px staff spacing');check(d.querySelector('#score .vf-staveconnector')!==null,'Related parts missing their connector');
   }finally{proto.draw=originalDraw;}
+  for(const width of [1440,390]){
+   frame.style.width=width+'px';await tick();
+   for(const m of w.L2Material.motifs)for(const device of ['ostinato','sequence','inversion','diminution','augmentation']){
+    try{const study=w.L2Material.study({tonic:'C4'},m,device),material={preferredBarsPerSystem:4,staves:[{label:'Motif model',clef:'treble',key:'C',bars:study.bars}]};w.L2Renderer.render(d.querySelector('#model-score'),material);
+     check(d.querySelector('#model-score .vf-phrase-slur')!==null,width+' '+m.id+' '+device+' missing phrasing');
+     const tied=study.bars.some(b=>b.events.some(e=>e.tieNext));check(!tied||d.querySelector('#model-score .vf-tie')!==null,width+' '+m.id+' '+device+' missing ties');
+     const end=study.bars.reduce((sum,b)=>sum+b.events.reduce((s,e)=>s+w.L2Theory.beats(e),0),0),timeline=w.L2Playback.timeline(material);check(Math.max(...timeline.map(e=>e.at+e.duration))<=end,width+' '+m.id+' '+device+' audio exceeds passage');
+    }catch(e){errors.push(width+' '+m.id+' '+device+': '+e.message);}
+   }
+  }
+  const audio=w.L2Playback.timeline({staves:[{bars:[{meter:'4/4',events:[{p:['C4'],d:'h',tieNext:true},{p:['C4'],d:'h'}]}]}]});check(audio.length===1&&audio[0].duration===4,'Tied notes must sound as one sustained attack');
   w.L2App.load('harmony-roman',91276);d.querySelector('#answer-0').value='My own response';d.querySelector('#answer-0').dispatchEvent(new Event('input'));w.L2App.load('harmony-roman',91276);check(d.querySelector('#answer-0').value==='My own response','Draft not restored');check(w.location.search.includes('seed=91276'),'Seed URL not retained');
   const rules=[...d.styleSheets].flatMap(s=>[...s.cssRules]).map(r=>r.cssText).join('\n');check(rules.includes('body[data-print="question"] #model'),'Question print does not hide model');check(rules.includes('body[data-print="model"] #score'),'Model print does not hide question score');
   for(const f of ['intervals','transposition','composition']){d.querySelector('#family').value=f;d.querySelector('#family').dispatchEvent(new Event('change'));check(d.querySelector('#template').options.length>0,f+' empty filter');for(const o of d.querySelector('#year').options){if(o.disabled)continue;d.querySelector('#year').value=o.value;d.querySelector('#year').dispatchEvent(new Event('change'));check(d.querySelector('#template').options.length>0,f+' '+o.value+' empty filter');}}
